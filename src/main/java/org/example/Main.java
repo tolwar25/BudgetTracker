@@ -2,21 +2,24 @@ package org.example;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import java.io.IOException;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Main {
     public static void main(String[] args) {
         try {
-            // Отправляем GET-запрос к веб-странице
+            // Отправляем GET-запрос и получаем HTML
             Document doc = Jsoup.connect("https://magnit.ru/catalog?shopCode=992301")
-                    .userAgent("Mozilla/5.0")  // Задаем User-Agent (может помочь при блокировке ботов)
-                    .timeout(5000)  // Устанавливаем тайм-аут соединения
-                    .get();  // Выполняем GET-запрос
+                    .userAgent("Mozilla/5.0")
+                    .timeout(5000)
+                    .get();
 
-            // Выводим содержимое страницы в консоль
-            System.out.println(doc.html());  // Выводим HTML-код страницы
+            // Записываем содержимое в файл с помощью NIO (Files.write)
+            Files.write(Paths.get("output.html"), doc.html().getBytes());
+
+            System.out.println("HTML содержимое успешно записано в файл");
 
         } catch (IOException e) {
             e.printStackTrace();
