@@ -1,15 +1,20 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Хеллоу Ворлд");
-        Student s1 = new Student("Petya");
-        Student s2 = new Student("Sanya");
-        Student.study();
-        System.out.println(s1.greeting());
-        System.out.println(s2.greeting());
-    }
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import java.io.IOException;
+
+public class Main {
+    static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
+    static String SHOP_ID = "992301";
+
+    public static void main(String[] args) {
+        try {
+            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
+            System.out.println(doc.html());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
