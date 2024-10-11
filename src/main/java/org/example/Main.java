@@ -13,8 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID)
-                    .get();
+            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
             Files.write(Paths.get("output.html"), doc.html().getBytes());
             System.out.println("HTML содержимое успешно записано в файл");
         } catch (IOException e) {
