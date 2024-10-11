@@ -11,8 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID)
-                    .get();
+            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
             System.out.println(doc.html());
         } catch (IOException e) {
             e.printStackTrace();
