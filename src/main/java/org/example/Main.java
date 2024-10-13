@@ -2,6 +2,8 @@ package org.example;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,8 +16,12 @@ public class Main {
     public static void main(String[] args) {
         try {
             Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
-            Files.write(Paths.get("output.html"), doc.html().getBytes());
-            System.out.println("HTML содержимое успешно записано в файл");
+            Elements titles = doc.select("article");
+            for (Element title: titles){
+                String price = title.select(".unit-catalog-product-preview-prices__top-row").text();
+                String name = title.select(".unit-catalog-product-preview-title").text();
+                System.out.println(price + " " + name);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
