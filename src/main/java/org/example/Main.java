@@ -28,6 +28,7 @@ public class Main {
                 String pricePerQuantity = title.select(".unit-catalog-product-preview-unit-value").text();
                 writer.write(bigDecimalPrice + " " + name + " " +pricePerQuantity + "\n");
             }
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
