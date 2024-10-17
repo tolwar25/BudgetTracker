@@ -10,25 +10,28 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 public class Main {
-    static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
-    static String SHOP_ID = "992301";
+    final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
+    final static String SHOP_ID = "992301";
+    final static String output = "output.txt";
 
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args) throws IOException {
+        try (FileWriter writer = new FileWriter(output)) {
             Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
             Elements titles = doc.select("article");
-            FileWriter writer = new FileWriter("output.txt");
-            for (Element title: titles){
-                String price = title.select(".unit-catalog-product-preview-prices__regular").text();
-                String numericPrice = price.replaceAll("[^\\d.,]", "").replace(",", ".");
-                BigDecimal bigDecimalPrice = new BigDecimal(numericPrice);
+            for (Element title : titles) {
+                String priceString = title.select(".unit-catalog-product-preview-prices__regular")
+                        .text()
+                        .replaceAll("[^\\d.,]", "")
+                        .replace(",", ".");
+                BigDecimal price = new BigDecimal(priceString);
 
                 String name = title.select(".unit-catalog-product-preview-title").text();
 
                 String pricePerQuantity = title.select(".unit-catalog-product-preview-unit-value").text();
-                writer.write(bigDecimalPrice + " " + name + " " +pricePerQuantity + "\n");
+                writer.write(pricePerQuantity.isEmpty() ?
+                        price + " " + name + "\n" :
+                        price + " " + name + " " + pricePerQuantity + "\n");
             }
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
