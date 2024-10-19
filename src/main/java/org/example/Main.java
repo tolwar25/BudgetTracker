@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 public class Main {
     final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
     final static String SHOP_ID = "992301";
-    final static String output = "output.txt";
+    final static String OUTPUT = "output.txt";
 
     public static void main(String[] args) throws IOException {
-        try (FileWriter writer = new FileWriter(output)) {
+        try (FileWriter writer = new FileWriter(OUTPUT)) {
             Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
             Elements titles = doc.select("article");
             for (Element title : titles) {
