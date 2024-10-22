@@ -3,9 +3,9 @@ package org.example;
 import java.math.BigDecimal;
 
 public class Product {
-    private String name;
-    private String pricePerQuantity;
-    private BigDecimal price;
+    private final String name;
+    private final String pricePerQuantity;
+    private final BigDecimal price;
 
     public Product(BigDecimal price, String name, String pricePerQuantity) {
         this.price = price;

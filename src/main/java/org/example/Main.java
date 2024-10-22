@@ -5,10 +5,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import static java.lang.String.valueOf;
 
 public class Main {
     final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
@@ -18,7 +21,7 @@ public class Main {
     static ArrayList<Product> products = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        try (FileWriter writer = new FileWriter(OUTPUT)) {
+        try (BufferedWriter writer =new BufferedWriter( new FileWriter(OUTPUT))) {
             Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
             Elements titles = doc.select("article");
             for (Element title : titles) {
@@ -34,9 +37,9 @@ public class Main {
 
                 products.add(new Product(price, name, pricePerQuantity));
             }
-
-            for (Product product : products) {
-                System.out.println(product);
+            for (Product line : products) {
+                writer.write(valueOf(line));
+                writer.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
