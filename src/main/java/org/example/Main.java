@@ -5,17 +5,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
     final static String SHOP_ID = "992301";
     final static String OUTPUT = "output.txt";
 
+    public static List<Product> products = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
-        try (FileWriter writer = new FileWriter(OUTPUT)) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT))) {
             Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
             Elements titles = doc.select("article");
             for (Element title : titles) {
@@ -27,10 +32,12 @@ public class Main {
 
                 String name = title.select(".unit-catalog-product-preview-title").text();
 
-                String pricePerQuantity = title.select(".unit-catalog-product-preview-unit-value").text();
-                writer.write(pricePerQuantity.isEmpty() ?
-                        price + " " + name + "\n" :
-                        price + " " + name + " " + pricePerQuantity + "\n");
+                String quantity = title.select(".unit-catalog-product-preview-unit-value").text();
+
+                products.add(new Product(price, name, quantity));
+            }
+            for (Product product : products) {
+                writer.write(product.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
