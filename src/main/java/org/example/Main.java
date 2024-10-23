@@ -37,7 +37,7 @@ public class Main {
                 products.add(new Product(price, name, quantity));
             }
             for (Product product : products) {
-                writer.write("" + product);
+                writer.write(product.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
