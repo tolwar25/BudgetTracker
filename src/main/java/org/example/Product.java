@@ -7,10 +7,10 @@ public class Product {
     private final String quantity;
     private final BigDecimal price;
 
-    public Product(BigDecimal price, String name, String pricePerQuantity) {
+    public Product(BigDecimal price, String name, String quantity) {
         this.price = price;
         this.name = name;
-        this.quantity = pricePerQuantity;
+        this.quantity = quantity;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class Main {
     final static String SHOP_ID = "992301";
     final static String OUTPUT = "output.txt";
 
-    public static List<Object> products = new ArrayList<>();
+    public static List<Product> products = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT))) {
@@ -36,7 +36,7 @@ public class Main {
 
                 products.add(new Product(price, name, quantity));
             }
-            for (Object product : products) {
+            for (Product product : products) {
                 writer.write("" + product);
             }
         } catch (IOException e) {
