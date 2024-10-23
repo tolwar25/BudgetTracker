@@ -4,19 +4,19 @@ import java.math.BigDecimal;
 
 public class Product {
     private final String name;
-    private final String pricePerQuantity;
+    private final String quantity;
     private final BigDecimal price;
 
     public Product(BigDecimal price, String name, String pricePerQuantity) {
         this.price = price;
         this.name = name;
-        this.pricePerQuantity = pricePerQuantity;
+        this.quantity = pricePerQuantity;
     }
 
     @Override
     public String toString() {
-        return pricePerQuantity.isEmpty() ?
+        return quantity.isEmpty() ?
                 price + " " + name + "\n" :
-                price + " " + name + " " + pricePerQuantity + "\n";
+                price + " " + name + " " + quantity + "\n";
     }
 }
