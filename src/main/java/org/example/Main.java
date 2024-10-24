@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
+    final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=%s&page=%d";
     final static String SHOP_ID = "992301";
     final static String OUTPUT = "output.txt";
 
@@ -21,14 +21,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT))) {
-            Document doc = Jsoup.connect(String.format("%s%s", MAGNIT_URL, SHOP_ID)).get();
+            Document doc = Jsoup.connect(String.format(MAGNIT_URL, SHOP_ID, 1)).get();
 
             Elements countPages = doc.select(".pl-pagination__pager");
             String lastPageString = countPages.select(".pl-button__icon").last().text();
             int lastPage = new Integer(lastPageString);
 
             for (int page = 1; page <= lastPage; page++) {
-                Document doc2 = Jsoup.connect(String.format("%s%s&page=%d", MAGNIT_URL, SHOP_ID, page)).get();
+                Document doc2 = Jsoup.connect(String.format(MAGNIT_URL, SHOP_ID, page)).get();
 
                 Elements titles = doc2.select("article");
                 for (Element title : titles) {
