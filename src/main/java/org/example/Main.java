@@ -16,20 +16,19 @@ public class Main {
     final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
     final static String SHOP_ID = "992301";
     final static String OUTPUT = "output.txt";
-    final static String PAGE = "&page=";
 
     public static List<Product> products = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT))) {
-            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
+            Document doc = Jsoup.connect(String.format("%s%s",MAGNIT_URL,SHOP_ID)).get();
 
             Elements countPages = doc.select(".pl-pagination__pager");
             String lastPageString = countPages.select(".pl-button__icon").last().text();
             int lastPage = new Integer(lastPageString);
 
-            for (int i = 1; i <= lastPage; i++) {
-                Document doc2 = Jsoup.connect(MAGNIT_URL + SHOP_ID + PAGE + i).get();
+            for (int page = 1; page <= lastPage; page++) {
+                Document doc2 = Jsoup.connect(String.format("%s%s&page=%d",MAGNIT_URL,SHOP_ID,page)).get();
 
                 Elements titles = doc2.select("article");
                 for (Element title : titles) {
