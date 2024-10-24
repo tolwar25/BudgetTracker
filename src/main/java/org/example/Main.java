@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=";
+    final static String MAGNIT_URL = "https://magnit.ru/catalog?shopCode=%s&page=%d";
     final static String SHOP_ID = "992301";
     final static String OUTPUT = "output.txt";
 
@@ -21,20 +21,29 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT))) {
-            Document doc = Jsoup.connect(MAGNIT_URL + SHOP_ID).get();
-            Elements titles = doc.select("article");
-            for (Element title : titles) {
-                String priceString = title.select(".unit-catalog-product-preview-prices__regular")
-                        .text()
-                        .replaceAll("[^\\d.,]", "")
-                        .replace(",", ".");
-                BigDecimal price = new BigDecimal(priceString);
+            Document doc = Jsoup.connect(String.format(MAGNIT_URL, SHOP_ID, 1)).get();
 
-                String name = title.select(".unit-catalog-product-preview-title").text();
+            Elements countPages = doc.select(".pl-pagination__pager");
+            String lastPageString = countPages.select(".pl-button__icon").last().text();
+            int lastPage = new Integer(lastPageString);
 
-                String quantity = title.select(".unit-catalog-product-preview-unit-value").text();
+            for (int page = 1; page <= lastPage; page++) {
+                Document doc2 = Jsoup.connect(String.format(MAGNIT_URL, SHOP_ID, page)).get();
 
-                products.add(new Product(price, name, quantity));
+                Elements titles = doc2.select("article");
+                for (Element title : titles) {
+                    String priceString = title.select(".unit-catalog-product-preview-prices__regular")
+                            .text()
+                            .replaceAll("[^\\d.,]", "")
+                            .replace(",", ".");
+                    BigDecimal price = new BigDecimal(priceString);
+
+                    String name = title.select(".unit-catalog-product-preview-title").text();
+
+                    String quantity = title.select(".unit-catalog-product-preview-unit-value").text();
+
+                    products.add(new Product(price, name, quantity));
+                }
             }
             for (Product product : products) {
                 writer.write(product.toString());
