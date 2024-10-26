@@ -26,23 +26,32 @@ public class Main {
             Elements countPages = doc.select(".pl-pagination__pager");
             String lastPageString = countPages.select(".pl-button__icon").last().text();
             int lastPage = new Integer(lastPageString);
+            String pattern = "/product/(\\d+)-";
 
             for (int page = 1; page <= lastPage; page++) {
                 Document doc2 = Jsoup.connect(String.format(MAGNIT_URL, SHOP_ID, page)).get();
-
                 Elements titles = doc2.select("article");
                 for (Element title : titles) {
-                    String priceString = title.select(".unit-catalog-product-preview-prices__regular")
-                            .text()
-                            .replaceAll("[^\\d.,]", "")
-                            .replace(",", ".");
-                    BigDecimal price = new BigDecimal(priceString);
+                    String href = title.select("a[href]").attr("href");
+                    java.util.regex.Pattern regex = java.util.regex.Pattern.compile(pattern);
+                    java.util.regex.Matcher matcher = regex.matcher(href);
+                    if (matcher.find()) {
+                        String productId = matcher.group(1);
 
-                    String name = title.select(".unit-catalog-product-preview-title").text();
+                        String priceString = title.select(".unit-catalog-product-preview-prices__regular")
+                                .text()
+                                .replaceAll("[^\\d.,]", "")
+                                .replace(",", ".");
+                        BigDecimal price = new BigDecimal(priceString);
 
-                    String quantity = title.select(".unit-catalog-product-preview-unit-value").text();
+                        String name = title.select(".unit-catalog-product-preview-title").text();
 
-                    products.add(new Product(price, name, quantity));
+                        String quantity = title.select(".unit-catalog-product-preview-unit-value").text();
+
+                        products.add(new Product(price, name, quantity, productId));
+                    } else {
+                        System.out.println("No product found for page " + page);
+                    }
                 }
             }
             for (Product product : products) {
