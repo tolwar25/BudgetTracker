@@ -4,21 +4,23 @@ import java.math.BigDecimal;
 
 public class Product {
     private final String name;
-    private final String quantity;
     private final BigDecimal price;
-    private final String productId;
+    private final String id;
 
-    public Product(BigDecimal price, String name, String quantity, String productId) {
+    public Product(String id, String name, String quantity, BigDecimal price) {
+        this.price = price;
+        this.name = name + " " + quantity;
+        this.id = id;
+    }
+
+    public Product(String id, String name, BigDecimal price) {
         this.price = price;
         this.name = name;
-        this.quantity = quantity;
-        this.productId = productId;
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return quantity.isEmpty() ?
-                price + " " + name + " " + productId + "\n" :
-                price + " " + name + " " + quantity + " " + productId + "\n";
+        return id + " " + name + " " + price + "\n";
     }
 }
