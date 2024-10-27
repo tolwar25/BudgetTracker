@@ -3,20 +3,20 @@ package org.example;
 import java.math.BigDecimal;
 
 public class Product {
+    private final String id;
     private final String name;
     private final BigDecimal price;
-    private final String id;
 
     public Product(String id, String name, String quantity, BigDecimal price) {
-        this.price = price;
-        this.name = name + " " + quantity;
         this.id = id;
+        this.name = name + " " + quantity;
+        this.price = price;
     }
 
     public Product(String id, String name, BigDecimal price) {
-        this.price = price;
-        this.name = name;
         this.id = id;
+        this.name = name;
+        this.price = price;
     }
 
     @Override
