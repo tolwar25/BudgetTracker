@@ -11,13 +11,29 @@ class Request {
     private String storeType;
     private String catalogType;
 
-    // Конструкторы, геттеры и сеттеры
-    public void setSort(Sort sort) { this.sort = sort; }
-    public void setPagination(Pagination pagination) { this.pagination = pagination; }
-    public void setIncludeAdultGoods(boolean includeAdultGoods) { this.includeAdultGoods = includeAdultGoods; }
-    public void setStoreCode(String storeCode) { this.storeCode = storeCode; }
-    public void setStoreType(String storeType) { this.storeType = storeType; }
-    public void setCatalogType(String catalogType) { this.catalogType = catalogType; }
+    public void setSort(Sort sort) {
+        this.sort = sort;
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
+    }
+
+    public void setIncludeAdultGoods(boolean includeAdultGoods) {
+        this.includeAdultGoods = includeAdultGoods;
+    }
+
+    public void setStoreCode(String storeCode) {
+        this.storeCode = storeCode;
+    }
+
+    public void setStoreType(String storeType) {
+        this.storeType = storeType;
+    }
+
+    public void setCatalogType(String catalogType) {
+        this.catalogType = catalogType;
+    }
 
     public Sort getSort() {
         return sort;
@@ -68,7 +84,6 @@ class Sort {
     public void setType(String type) {
         this.type = type;
     }
-    // Геттеры и сеттеры
 }
 
 class Pagination {
@@ -95,5 +110,4 @@ class Pagination {
     public void setOffset(int offset) {
         this.offset = offset;
     }
-    // Геттеры и сеттеры
 }
