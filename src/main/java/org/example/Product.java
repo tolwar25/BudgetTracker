@@ -19,6 +19,12 @@ public class Product {
         this.price = price;
     }
 
+    public Product(Item item) {
+            this.name = item.getName() + (item.getWeighted().getShelfLabel() != null ? " " + item.getWeighted().getShelfLabel() : "");
+            this.price = BigDecimal.valueOf(item.getPrice());
+            this.id = item.getId();
+    }
+
     @Override
     public String toString() {
         return id + " " + name + " " + price + "\n";
